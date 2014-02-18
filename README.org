@@ -1,8 +1,7 @@
-#+TITLE: typebar
+* typebar
+A bluetooth typewriter project for Arduino
 
-Bluetooth Typewriter
-
-* =TODO= [0%]
+*** =TODO= [0%]
 - [ ] Communication (CODE)
   - [ ] Integrate library for bluetooth communication using [[https://github.com/jrowberg/bglib][BLE112]]
   - [ ] LED bluetooth connection indicator
