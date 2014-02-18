@@ -1,6 +1,16 @@
-typebar
-=======
+#+TITLE: typebar
 
-Teensy Typewriter
+Bluetooth Typewriter
 
-
+* TODO [0%]
+- [ ] Communication (CODE)
+  - [ ] Integrate library for bluetooth communication using [[https://github.com/jrowberg/bglib][BLE112]]
+  - [ ] LED bluetooth connection indicator
+  - [ ] (OPTIONAL) Auto-create textfile in cloud for new typing task
+- [ ] Hardware (CODE)
+  - [ ] shift-register for keys
+  - [ ] multiplex for LEDs
+  - [ ] sensor for carriage return
+  - [ ] rotary encoder attached to paper feed, for scrolling
+  - [ ] Keymaps
+  - [ ] (OPTIONAL) MIDI instrument mode
