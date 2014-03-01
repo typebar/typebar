@@ -21,6 +21,7 @@ class ShiftRegister
 		//set up for the three pins for each shift register and the number of shiftregisters in total
 		//storage_Register_Clock_Pin (You can hold this pin LOW while you get everything setup 
 		//and nothing on the display pins will change.
+        //register_Clock_pin is the 'latch pin'
         setUpShiftRegister registerPins(int serial_Pin, int register_Clock_Pin, int storage_Register_Clock_Pin, int number_Of_Registers);
         setUpShiftRegister segmentPins(int a, int b, int c, int d, int e, int f, int g, int h, boolean common);
         void clearRegisters(); //reset the shift register
@@ -32,7 +33,7 @@ class ShiftRegister
 
     private: //a list of variables to be used by the registers allowing for 25 full registers if needed
         //variables for each pin
-          int _a, _b, _c, _d, _e, _f, _g, _h, _number;
+        int _a, _b, _c, _d, _e, _f, _g, _h, _number;
         int _serial_Pin, _register_Clock_Pin, _storage_Register_Clock_Pin, _number_of_Registers;
         byte numeral[10];
         byte numeralb[10];
