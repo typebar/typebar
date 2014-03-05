@@ -1,3 +1,4 @@
+
 * typebar
 A bluetooth typewriter project for Arduino
 
