@@ -1,2 +1,5 @@
 .DS_Store
 /.floo
+/lib/_MCP/#MCP23017.h#
+/lib/_MCP/.#MCP23017.h
+/lib/_MCP/_MCP_WIRE/
