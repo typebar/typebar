@@ -10,7 +10,6 @@
   Written by Limor Fried/Ladyada for Adafruit Industries.  
   BSD license, all text above must be included in any redistribution
  ****************************************************/
-
 #ifndef _MCP23017_H_
 #define _MCP23017_H_
 

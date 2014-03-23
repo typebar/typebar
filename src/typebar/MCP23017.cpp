@@ -10,7 +10,6 @@
   Written by Limor Fried/Ladyada for Adafruit Industries.  
   BSD license, all text above must be included in any redistribution
  ****************************************************/
-
 #include <Wire.h>
 #include <avr/pgmspace.h>
 #include "MCP23017.h"
