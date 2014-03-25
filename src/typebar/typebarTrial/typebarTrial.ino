@@ -1,3 +1,18 @@
+/// -*- mode: Arduino; tab-width: 2; indent-tabs-mode:nil; -*-     ///
+//////////////////////////////////////////////////////////////////////
+/// Author: Anton Strilchuk <anton@isoty.pe>                       ///
+///         Pedro Kirk <ped4416@gmail.com>                         ///
+/// URL: http://typebar.github.io                                  ///
+/// Created: 25-03-2014                                            ///
+/// Last-Updated: 25-03-2014                                       ///
+///   By: Anton Strilchuk <anton@isoty.pe>                         ///
+///                                                                ///
+/// Filename: typebarTrial                                         ///
+/// Version: 0.0.1                                                 ///
+/// Description: Teensy Typewriter                                 ///
+///                                                                ///
+//////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////
 
 //define all possible keys
 #define KEY_CTRL	0x01
@@ -120,18 +135,62 @@ bool shiftOn = false;//keep track of shift press
 
 //basic array of key inputs. 
 //uint8_t may need this? 
-int textInputChip1[] = {KEY_Q,KEY_A,KEY_2,KEY_Z,KEY_W,KEY_S,KEY_3,KEY_X,KEY_E,KEY_D,KEY_4,KEY_C,
-KEY_R,KEY_F,KEY_5,KEY_V};
+int textInputChip1[] =
+  {KEY_Q, //0
+   KEY_A, //1
+   KEY_2, //2
+   KEY_Z, //3
+   KEY_W, //4
+   KEY_S, //5
+   KEY_3, //6
+   KEY_X, //7
+   KEY_E, //8
+   KEY_D, //9
+   KEY_4, //10
+   KEY_C, //11
+   KEY_R, //12
+   KEY_F, //13
+   KEY_5, //14
+   KEY_V  //15
+  };
 //http://www.asciitable.com/ I Have used hex code values instead of KEY-- 
 // int textInputChip1[] = 51,41,32,5A,57,53,33,58,45,44,34,43,
 // 52,46,35,56};
 //
-int textInputChip2[] = {KEY_T,KEY_G,KEY_6,KEY_B,KEY_Y,KEY_H,KEY_7,KEY_N,KEY_U,KEY_J,KEY_8,KEY_M,
-KEY_I,KEY_K,KEY_9,KEY_COMMA};
+int textInputChip2[] =
+  {KEY_T,    //0
+   KEY_G,    //1
+   KEY_6,    //2
+   KEY_B,    //3
+   KEY_Y,    //4
+   KEY_H,    //5
+   KEY_7,    //6
+   KEY_N,    //7
+   KEY_U,    //8
+   KEY_J,    //9
+   KEY_8,    //10
+   KEY_M,    //11
+   KEY_I,    //12
+   KEY_K,    //13
+   KEY_9,    //14
+   KEY_COMMA //15
+  };
 
 //only 10 keys here
-int textInputChip3[] = {KEY_O,KEY_L,KEY_MINUS,KEY_PERIOD,KEY_P,KEY_SEMICOLON,KEY_LEFT,KEY_RIGHT,
-KEY_UP,KEY_DOWN};//3/4 = key_left, 1/2 = key_right, 1/8 = key_up, 6/8 = key_down.. may need to change these. Look at typewriter
+int textInputChip3[] =
+  {KEY_O,         //0
+   KEY_L,         //1
+   KEY_MINUS,     //2
+   KEY_PERIOD,    //3
+   KEY_P,         //4
+   KEY_SEMICOLON, //5
+   KEY_LEFT,      //6
+   KEY_RIGHT,     //7
+   KEY_UP,        //8
+   KEY_DOWN       //9
+  };
+
+//3/4 = key_left, 1/2 = key_right, 1/8 = key_up, 6/8 = key_down.. may need to change these. Look at typewriter
 
 MCP23017 MCP; //Define class MCP23017 as MCP
 
@@ -156,14 +215,6 @@ void loop() {
   sendText();
 }
 
-
-// void loop()
-// {
-// //call the method to print text to file
-// //sendText();
-
-// }
-
 //make sure only correct key is sent to USB Keyboard
 void mapToText(int key, int modifier) {
   // press one key with up to one modifier, then release
@@ -183,189 +234,73 @@ void mapToText(int key, int modifier) {
 void sendText()
 {
 
-	for(int set_pin_address = 0; set_pin_address < 4; set_pin_address++) {
-	    MCP.begin(set_pin_address);
+  for(int set_pin_address = 0; set_pin_address < 4; set_pin_address++) {
+    MCP.begin(set_pin_address);
 
-	    //call chip 1 text mappings
-	    if (set_pin_address == 0)
-	    {
-			//for(int keyCode1 = 0; keyCode1 < textInputChip1.length; keyCode1 ++)
-			for(int keyCode1 = 0; keyCode1 < 16; keyCode1 ++)
-			{//iterate over the key code array
-			    //setup for chip 1 reaadings
-				if(shiftOn == false)
-				{
-					Serial.print(textInputChip1[keyCode1]);
-					//mapToText(MCP.digitalRead(textInputChip1[keyCode1]), 0);//set keys to first chip for lower case
-				}else if (shiftOn == true){
-					Serial.print(textInputChip1[keyCode1]);
-					//mapToText(MCP.digitalRead(textInputChip1[keyCode1]), MODIFIERKEY_SHIFT);//set keys to first chip for upper case
-				}
-			}
-		}
-		//call chip 2 text mappings
-		if (set_pin_address == 1)
-	    {
-			//for(int keyCode2 = 0, keyCode2 < textInputChip2.length; keyCode2 ++)
-			for(int keyCode2 = 0; keyCode2 < 16; keyCode2 ++)
-			{//iterate over the key code array
-			    //setup for chip 2 readings
-				if(shiftOn == false)
-				{
-					//Serial.print(textInputChip2[keyCode2]);
-					//mapToText(MCP.digitalRead(textInputChip2[keyCode2]), 0);//set keys to fchip2 for lower case
-				}else if (shiftOn == true){
-					//Serial.print(textInputChip2[keyCode2]);	
-					//mapToText(MCP.digitalRead([textInputChip2[keyCode2]), MODIFIERKEY_SHIFT);//set keys to chip2 for upper case
-				}
-			}
-		}
-		//call chip 3 text mappings 
-		/*--------------------------
-		Need to add in Space Bar and other keys here.. ? 
-		*/
-		if (set_pin_address == 2)
-	    {
-			//for(int keyCode3 = 0; keyCode3 < textInputChip3.length; keyCode3 ++)
-			for(int keyCode3 = 0; keyCode3 < 16; keyCode3 ++)
-			{//iterate over the key code array
-			    //setup for chip 3 readings
-				if(shiftOn == false)
-				{
-					//Serial.print(textInputChip3[keyCode3]);
-					//mapToText(MCP.digitalRead(textInputChip3[keyCode3]), 0);//set keys to chip3 for lower case
-				}else if (shiftOn == true){
-					//Serial.print(textInputChip3[keyCode3]);
-					//mapToText(MCP.digitalRead([textInputChip3[keyCode3]), MODIFIERKEY_SHIFT);//set keys to chip3 for upper case
-				}
-			}
-		}	
-		//chip 4 is outputs for LEDs
-		//call chip 4 LED mappings
-		if (set_pin_address == 3)
-	    {
-	    	for(int ledOut = 0; ledOut<16; ledOut++)
-	    	{
-	    		//code to print out 16 leds.. 
-	    	}
+    //call chip 1 text mappings
+    if (set_pin_address == 0)
+      {
+	//for(int keyCode1 = 0; keyCode1 < textInputChip1.length; keyCode1 ++)
+	for(int keyCode1 = 0; keyCode1 < 16; keyCode1 ++)
+	  {//iterate over the key code array
+	    //setup for chip 1 reaadings
+	    if(shiftOn == false)
+	      {
+		//Serial.print(textInputChip1[keyCode1]); //debug
+		mapToText(MCP.digitalRead(textInputChip1[keyCode1]), 0);
+		//set keys to first chip for lower case
+	      }else if (shiftOn == true){
+	      //Serial.print(textInputChip1[keyCode1]); //debug
+	      mapToText(MCP.digitalRead(textInputChip1[keyCode1]), MODIFIERKEY_SHIFT);//set keys to first chip for upper case
 	    }
-	} 
+	  }
+      }
+    //call chip 2 text mappings
+    if (set_pin_address == 1)
+      {
+	//for(int keyCode2 = 0, keyCode2 < textInputChip2.length; keyCode2 ++)
+	for(int keyCode2 = 0; keyCode2 < 16; keyCode2 ++)
+	  {//iterate over the key code array
+	    //setup for chip 2 readings
+	    if(shiftOn == false)
+	      {
+		//Serial.print(textInputChip2[keyCode2]);
+		mapToText(MCP.digitalRead(textInputChip2[keyCode2]), 0);//set keys to fchip2 for lower case
+	      }else if (shiftOn == true){
+	      //Serial.print(textInputChip2[keyCode2]);	
+	      mapToText(MCP.digitalRead(textInputChip2[keyCode2]), MODIFIERKEY_SHIFT);//set keys to chip2 for upper case
+	    }
+	  }
+      }
+    //call chip 3 text mappings 
+    /*--------------------------
+      Need to add in Space Bar and other keys here.. ? 
+    */
+    if (set_pin_address == 2)
+      {
+	//for(int keyCode3 = 0; keyCode3 < textInputChip3.length; keyCode3 ++)
+	for(int keyCode3 = 0; keyCode3 < 16; keyCode3 ++)
+	  {//iterate over the key code array
+	    //setup for chip 3 readings
+	    if(shiftOn == false)
+	      {
+		//Serial.print(textInputChip3[keyCode3]);
+		mapToText(MCP.digitalRead(textInputChip3[keyCode3]), 0);//set keys to chip3 for lower case
+	      }else if (shiftOn == true){
+	      //Serial.print(textInputChip3[keyCode3]);
+	      mapToText(MCP.digitalRead(textInputChip3[keyCode3]), MODIFIERKEY_SHIFT);//set keys to chip3 for upper case
+	    }
+	  }
+      }	
+    //chip 4 is outputs for LEDs
+    //call chip 4 LED mappings
+    if (set_pin_address == 3)
+      {
+	for(int ledOut = 0; ledOut<16; ledOut++)
+	  {
+	    //code to print out 16 leds.. 
+	  }
+      }
+  } 
 }
-
-
-
-// void mapToText(int pinInput)
-// {
-//    pinInput = dataFromPins;//take in the updateKeys information.. 
-
-//     for(int inputKeys = 0; inputKeys < 42; inputKeys++)//iterate through all 42 standard keys from typewriter
-        
-//         if(shiftOn == false)
-//         {//allow the printing of all the lower case letters and numbers
-// 		    Keyboard.set_modifier(0);//no modifier keys.. 
-// 		    switch (pinInput) {//take data from pins
-// 			    case 0;
-// 			      Keyboard.set_key1(KEY_Q);
-// 			      break;
-// 			    case 1:
-// 			      Keyboard.set_key1(KEY_A);
-// 			      break;
-// 			    case 2:
-// 			      Keyboard.set_key1(KEY_2);
-// 			      break;
-// 			    case 3;
-// 			      Keyboard.set_key1(KEY_Z);
-// 			      break;
-// 			    case 4:
-// 			      Keyboard.set_key1(KEY_W);
-// 			      break;
-// 			    case 5:
-// 			      Keyboard.set_key1(KEY_S);
-// 			      break;
-// 			    case 6:
-// 			      Keyboard.set_key1(KEY_3);
-// 			      break;
-// 			    case 7:
-// 			      Keyboard.set_key1(KEY_X);
-// 			      break;
-// 			    case 8;
-// 			      Keyboard.set_key1(KEY_E);
-// 			      break;
-// 			    case 9:
-// 			      Keyboard.set_key1(KEY_D);
-// 			      break;
-// 			    case 10:
-// 			      Keyboard.set_key1(KEY_4);
-// 			      break;
-// 			    case 11:
-// 			      Keyboard.set_key1(KEY_C);
-// 			      break;
-// 			    case 12:
-// 			      Keyboard.set_key1(KEY_R);
-// 			      break;
-// 			    case 13:
-// 			      Keyboard.set_key1(KEY_F);
-// 			      break;
-// 			    case 14;
-// 			      Keyboard.set_key1(KEY_5);
-// 			      break;
-// 			    case 15:
-// 			      Keyboard.set_key1(KEY_V);
-// 			      break;
-			   
-// 		} else if(shiftOn == true)
-// 		{//allow the printing of all the upper case letters and numbers
-//  			Keyboard.set_modifier(MODIFIERKEY_SHIFT);
-// 			switch (pinInput) {//take data from pins
-// 			    case 0;
-// 			      Keyboard.set_key1(KEY_Q);
-// 			      break;
-// 			    case 1:
-// 			      Keyboard.set_key1(KEY_A);
-// 			      break;
-// 			    case 2:
-// 			      Keyboard.set_key1(KEY_2);
-// 			      break;
-// 			    case 3;
-// 			      Keyboard.set_key1(KEY_Z);
-// 			      break;
-// 			    case 4:
-// 			      Keyboard.set_key1(KEY_W);
-// 			      break;
-// 			    case 5:
-// 			      Keyboard.set_key1(KEY_S);
-// 			      break;
-// 			    case 6:
-// 			      Keyboard.set_key1(KEY_3);
-// 			      break;
-// 			    case 7:
-// 			      Keyboard.set_key1(KEY_X);
-// 			      break;
-// 			    case 8;
-// 			      Keyboard.set_key1(KEY_E);
-// 			      break;
-// 			    case 9:
-// 			      Keyboard.set_key1(KEY_D);
-// 			      break;
-// 			    case 10:
-// 			      Keyboard.set_key1(KEY_4);
-// 			      break;
-// 			    case 11:
-// 			      Keyboard.set_key1(KEY_C);
-// 			      break;
-// 			    case 12:
-// 			      Keyboard.set_key1(KEY_R);
-// 			      break;
-// 			    case 13:
-// 			      Keyboard.set_key1(KEY_F);
-// 			      break;
-// 			    case 14;
-// 			      Keyboard.set_key1(KEY_5);
-// 			      break;
-// 			    case 15:
-// 			      Keyboard.set_key1(KEY_V);
-// 			      break;
-
-// 		}
-//     }     
-// }
+  
