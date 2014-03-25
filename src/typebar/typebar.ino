@@ -4,8 +4,8 @@
 ///         Pedro Kirk	    <ped4416@gmail.com>                    ///
 /// URL: http://typebar.github.io                                  ///
 /// Created: 23-03-2014                                            ///
-/// Last-Updated: 23-03-2014                                       ///
-///   By: y_pe <anton@isoty.pe>                                    ///
+/// Last-Updated: 25-03-2014                                       ///
+///   By: Anton Strilchuk <anton@isoty.pe>                         ///
 ///                                                                ///
 /// Filename: typebar                                              ///
 /// Version: 0.0.1                                                 ///
@@ -51,7 +51,7 @@
  * |       15 | See Address Selection Table  | Hardware Address Pin   |
  * |       16 | See Address Selection Table  | Hardware Address Pin   |
  * |       17 | See Address Selection Table  | Hardware Address Pin   |
- * |       18 | GND                          | RESET                  |
+ * |       18 | 5v                           | RESET                  |
  * |       19 |                              | Interrupt Output PORTB |
  * |       20 |                              | Interrupt Output PORTA |
  * |       21 | KEY_IN                       | GPA0                   |
@@ -78,7 +78,7 @@
  * NC     - | 11 || 18 | -> RESET
  * SCL   -> | 12 || 17 | <- A2
  * SDA  <-> | 13 || 16 | <- A1
- * NC     - | 13 || 15 | <- A0
+ * NC     - | 14 || 15 | <- A0
  *
  * I2C Expander Address Selection
  * | Expander | Address | A0, A01, A02  |
@@ -135,7 +135,7 @@ void updateKeys(){
   for(int set_pin_address = 0; set_pin_address < 4; set_pin_address++)
     {
       MCP.begin(set_pin_address);
-      //      Serial.println(set_pin_address);
+      //  Serial.println(set_pin_address);
       if (set_pin_address == 0)
         {
           //    Serial.println(i);
