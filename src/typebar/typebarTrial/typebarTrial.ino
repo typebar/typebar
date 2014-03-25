@@ -166,18 +166,18 @@ void loop() {
 
 //make sure only correct key is sent to USB Keyboard
 void mapToText(int key, int modifier) {
-  // // press one key with up to one modifier, then release
-  // Keyboard.set_modifier(modifier);
-  // Keyboard.set_key1(key);
-  // Keyboard.set_key2(0);
-  // Keyboard.set_key3(0);
-  // Keyboard.set_key4(0);
-  // Keyboard.set_key5(0);
-  // Keyboard.set_key6(0);
-  // Keyboard.send_now();
-  // delay(1);
-  // Keyboard.set_key1(0); 
-  // Keyboard.send_now();
+  // press one key with up to one modifier, then release
+  Keyboard.set_modifier(modifier);
+  Keyboard.set_key1(key);
+  Keyboard.set_key2(0);
+  Keyboard.set_key3(0);
+  Keyboard.set_key4(0);
+  Keyboard.set_key5(0);
+  Keyboard.set_key6(0);
+  Keyboard.send_now();
+  delay(1);
+  Keyboard.set_key1(0); 
+  Keyboard.send_now();
 }
 
 void sendText()
@@ -195,11 +195,11 @@ void sendText()
 			    //setup for chip 1 reaadings
 				if(shiftOn == false)
 				{
-					//Serial.print(textInputChip1[keyCode1]);
-					mapToText(MCP.digitalRead(textInputChip1[keyCode1]), 0);//set keys to first chip for lower case
+					Serial.print(textInputChip1[keyCode1]);
+					//mapToText(MCP.digitalRead(textInputChip1[keyCode1]), 0);//set keys to first chip for lower case
 				}else if (shiftOn == true){
-					//Serial.print(textInputChip1[keyCode1]);
-					mapToText(MCP.digitalRead(textInputChip1[keyCode1]), MODIFIERKEY_SHIFT);//set keys to first chip for upper case
+					Serial.print(textInputChip1[keyCode1]);
+					//mapToText(MCP.digitalRead(textInputChip1[keyCode1]), MODIFIERKEY_SHIFT);//set keys to first chip for upper case
 				}
 			}
 		}
@@ -213,10 +213,10 @@ void sendText()
 				if(shiftOn == false)
 				{
 					//Serial.print(textInputChip2[keyCode2]);
-					mapToText(MCP.digitalRead(textInputChip2[keyCode2]), 0);//set keys to fchip2 for lower case
+					//mapToText(MCP.digitalRead(textInputChip2[keyCode2]), 0);//set keys to fchip2 for lower case
 				}else if (shiftOn == true){
 					//Serial.print(textInputChip2[keyCode2]);	
-					mapToText(MCP.digitalRead([textInputChip2[keyCode2]), MODIFIERKEY_SHIFT);//set keys to chip2 for upper case
+					//mapToText(MCP.digitalRead([textInputChip2[keyCode2]), MODIFIERKEY_SHIFT);//set keys to chip2 for upper case
 				}
 			}
 		}
@@ -233,10 +233,10 @@ void sendText()
 				if(shiftOn == false)
 				{
 					//Serial.print(textInputChip3[keyCode3]);
-					mapToText(MCP.digitalRead(textInputChip3[keyCode3]), 0);//set keys to chip3 for lower case
+					//mapToText(MCP.digitalRead(textInputChip3[keyCode3]), 0);//set keys to chip3 for lower case
 				}else if (shiftOn == true){
 					//Serial.print(textInputChip3[keyCode3]);
-					mapToText(MCP.digitalRead([textInputChip3[keyCode3]), MODIFIERKEY_SHIFT);//set keys to chip3 for upper case
+					//mapToText(MCP.digitalRead([textInputChip3[keyCode3]), MODIFIERKEY_SHIFT);//set keys to chip3 for upper case
 				}
 			}
 		}	
