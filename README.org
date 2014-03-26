@@ -1,16 +1,4 @@
-
 * typebar
-A bluetooth typewriter project for Arduino
+Turn your beloved old typewriter into a modern computer keyboard with a few extra bells and whistles.
 
-*** =TODO= [0%]
-- [ ] Communication (CODE)
-  - [ ] Integrate library for bluetooth communication using [[https://github.com/jrowberg/bglib][BLE112]]
-  - [ ] LED bluetooth connection indicator
-  - [ ] (OPTIONAL) Auto-create textfile in cloud for new typing task
-- [ ] Hardware (CODE)
-  - [ ] shift-register for keys
-  - [ ] multiplex for LEDs
-  - [ ] sensor for carriage return
-  - [ ] rotary encoder attached to paper feed, for scrolling
-  - [ ] Keymaps
-  - [ ] (OPTIONAL) MIDI instrument mode
+We like typewriters and hope you do too! That’s why we started Typebar, an open-source project designed to allow the quick and easy re-purposing of vintage typewriters to be used as modern computer typing interfaces (keyboards and alike).
