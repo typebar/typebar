@@ -4,7 +4,7 @@
 ///         Pedro Kirk <ped4416@gmail.com>                         ///
 /// URL: http://typebar.github.io                                  ///
 /// Created: 25-03-2014                                            ///
-/// Last-Updated: 25-03-2014                                       ///
+/// Last-Updated: 26-03-2014                                       ///
 ///   By: Anton Strilchuk <anton@isoty.pe>                         ///
 ///                                                                ///
 /// Filename: typebarTrial                                         ///
@@ -136,9 +136,9 @@ bool shiftOn = false;//keep track of shift press
 //basic array of key inputs. 
 //uint8_t may need this?
 
-char smallcase [26] = { 'a','b','c','d','e','f','g','h','i',
-			'j','k','l','m','n','o','p','q','r',
-			's','t','u','v','w','x','y','z' };
+/* char smallcase [26] = { 'a','b','c','d','e','f','g','h','i', */
+/*                         'j','k','l','m','n','o','p','q','r', */
+/*                         's','t','u','v','w','x','y','z' }; */
 
 /* char lowercase[42] = { 'q', 'a', '2', 'z', 'w', 's', '3', 'x',  */
 /* 		       'e', 'd', '4', 'c', 'r', 'f', '5', 'v',  */
@@ -153,6 +153,56 @@ char smallcase [26] = { 'a','b','c','d','e','f','g','h','i',
 /* 		       "U", "J", "\'", "M", "I", "K", "\(", "\?", */
 /* 		       "O", "L", "\)", "\`", "P", "\:", */
 /* 		       "\^", "\*", "+" }; */
+
+byte textInputChip1[] =
+  {KEY_Q, //0
+   KEY_A, //1
+   KEY_2, //2
+   KEY_Z, //3
+   KEY_W, //4
+   KEY_S, //5
+   KEY_3, //6
+   KEY_X, //7
+   KEY_E, //8
+   KEY_D, //9
+   KEY_4, //10
+   KEY_C, //11
+   KEY_R, //12
+   KEY_F, //13
+   KEY_5, //14
+   KEY_V  //15
+  };
+
+byte textInputChip2[] =
+  {KEY_T,    //0
+   KEY_G,    //1
+   KEY_6,    //2
+   KEY_B,    //3
+   KEY_Y,    //4
+   KEY_H,    //5
+   KEY_7,    //6
+   KEY_N,    //7
+   KEY_U,    //8
+   KEY_J,    //9
+   KEY_8,    //10
+   KEY_M,    //11
+   KEY_I,    //12
+   KEY_K,    //13
+   KEY_9,    //14
+   KEY_COMMA //15
+  };
+byte textInputChip3[] =
+  {KEY_O,         //0
+   KEY_L,         //1
+   KEY_MINUS,     //2
+   KEY_PERIOD,    //3
+   KEY_P,         //4
+   KEY_SEMICOLON, //5
+   KEY_LEFT,      //6
+   KEY_RIGHT,     //7
+   KEY_UP,        //8
+   KEY_DOWN       //9
+  };
 
 MCP23017 MCP; //Define class MCP23017 as MCP
 
@@ -191,7 +241,7 @@ void mapToText(byte key, int modifier) {
   Keyboard.set_key5(0);
   Keyboard.set_key6(0);
   Keyboard.send_now();
-  delay(1);
+  delay(100);
   Keyboard.set_key1(0); 
   Keyboard.send_now();
 }
@@ -205,46 +255,49 @@ void sendText()
     //call chip 1 text mappings
     if (set_pin_address == 0)
       {
-	for(int keyCode = 0; keyCode < 16; keyCode ++)
-	  {//iterate over the key code array
-	    //setup for chip 1 readings
-	    //	    printMCPINFO();
-	    ledDebug();
-	    Serial.print(smallcase[keyCode]);
-	    if(MCP.digitalRead(keyCode) == 0) {
-	      Serial.println(smallcase[keyCode]); //debug
-	      //Keyboard.println(smallcase[keyCode1]); //to editor
-	      ledDebug();
-	    }
-	    else if (MCP.digitalRead(keyCode) == 0 && shiftOn) {
-	      Serial.println(smallcase[keyCode]); //debug
-	      //Keyboard.println(smallcase[keyCode1]); //to editor
-	      ledDebug();
-	    }
-	    //mapToText(MCP.digitalRead(textInputChip1[keyCode1]), 0);
-	    //set keys to first chip for lower case
+        for(int keyCode = 0; keyCode < 16; keyCode ++)
+          {//iterate over the key code array
+            //setup for chip 1 readings
+            //	    printMCPINFO();
+            ledDebug();
+            delay(5000);
+            Serial.println(textInputChip1[keyCode]);
+            mapToText(textInputChip1[keyCode], 0);
+            if(MCP.digitalRead(keyCode) == 0) {
+              //Serial.println(smallcase[keyCode]); //debug
+              //Keyboard.println(smallcase[keyCode1]); //to editor
+              
+              ledDebug();
+            }
+            else if (MCP.digitalRead(keyCode) == 0 && shiftOn) {
+              //Serial.println(smallcase[keyCode]); //debug
+              //Keyboard.println(smallcase[keyCode1]); //to editor
+              ledDebug();
+            }
+            //mapToText(MCP.digitalRead(textInputChip[keyCode]), 0);
+            //set keys to first chip for lower case
 
-	  }
+          }
       }
     //call chip 2 text mappings
     if (set_pin_address == 1)
       {
-	//for(int keyCode2 = 0, keyCode2 < textInputChip2.length; keyCode2 ++)
-	for(int keyCode = 0; keyCode < 16; keyCode ++)
-	  {//iterate over the key code array
-	    //setup for chip 2 readings
-	    Serial.println(smallcase[keyCode]);
-	    if(MCP.digitalRead(keyCode) == 0) {
-	      Serial.println(smallcase[keyCode]); //debug
-	      //Keyboard.println(smallcase[keyCode1]); //to editor
-	      ledDebug();
-	    }
-	    else if (MCP.digitalRead(keyCode) == 0 && shiftOn) {
-	      Serial.println(smallcase[keyCode]); //debug
-	      //Keyboard.println(smallcase[keyCode1]); //to editor
-	      ledDebug();
-	    }
-	  }
+        //for(int keyCode2 = 0, keyCode2 < textInputChip2.length; keyCode2 ++)
+        for(int keyCode = 0; keyCode < 16; keyCode ++)
+          {//iterate over the key code array
+            //setup for chip 2 readings
+            //Serial.println(smallcase[keyCode]);
+            if(MCP.digitalRead(keyCode) == 0) {
+              // Serial.println(smallcase[keyCode]); //debug
+              //Keyboard.println(smallcase[keyCode1]); //to editor
+              ledDebug();
+            }
+            else if (MCP.digitalRead(keyCode) == 0 && shiftOn) {
+              // Serial.println(smallcase[keyCode]); //debug
+              //Keyboard.println(smallcase[keyCode1]); //to editor
+              ledDebug();
+            }
+          }
       }
     //call chip 3 text mappings 
     /*--------------------------
@@ -253,29 +306,29 @@ void sendText()
     
     if (set_pin_address == 2)
       {
-	//for(int keyCode3 = 0; keyCode3 < textInputChip3.length; keyCode3 ++)
-	for(int keyCode = 0; keyCode < 16; keyCode ++)
-	  {//iterate over the key code array
-	    if(MCP.digitalRead(keyCode) == 0) {
-	      Serial.println(smallcase[keyCode]); //debug
-	      //Keyboard.println(smallcase[keyCode1]); //to editor
-	      ledDebug();
-	    }
-	    else if (MCP.digitalRead(keyCode) == 0 && shiftOn) {
-	      Serial.println(smallcase[keyCode]); //debug
-	      //Keyboard.println(smallcase[keyCode1]); //to editor
-	      ledDebug();
-	    }
-	  }
+        //for(int keyCode3 = 0; keyCode3 < textInputChip3.length; keyCode3 ++)
+        for(int keyCode = 0; keyCode < 16; keyCode ++)
+          {//iterate over the key code array
+            if(MCP.digitalRead(keyCode) == 0) {
+              //Serial.println(smallcase[keyCode]); //debug
+              //Keyboard.println(smallcase[keyCode1]); //to editor
+              ledDebug();
+            }
+            else if (MCP.digitalRead(keyCode) == 0 && shiftOn) {
+              //Serial.println(smallcase[keyCode]); //debug
+              //Keyboard.println(smallcase[keyCode1]); //to editor
+              ledDebug();
+            }
+          }
       }	
     //chip 4 is outputs for LEDs
     //call chip 4 LED mappings
     if (set_pin_address == 3)
       {
-	for(int ledOut = 0; ledOut<16; ledOut++)
-	  {
-	    //code to print out 16 leds.. 
-	  }
+        for(int ledOut = 0; ledOut<16; ledOut++)
+          {
+            //code to print out 16 leds.. 
+          }
       }
   } 
 }
