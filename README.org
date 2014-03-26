@@ -2,3 +2,7 @@
 Turn your beloved old typewriter into a modern computer keyboard with a few extra bells and whistles.
 
 We like typewriters and hope you do too! That’s why we started Typebar, an open-source project designed to allow the quick and easy re-purposing of vintage typewriters to be used as modern computer typing interfaces (keyboards and alike).
+
+#+BEGIN_HTML
+<img src="http://typebar.github.io/images/serialoutput.gif" width="75%">
+#+END_HTML
