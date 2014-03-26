@@ -219,7 +219,7 @@ void setup() {
 
   pinMode(13, OUTPUT);// use the p13 LED as debugging
   digitalWrite(13, HIGH);
-  delay(1000);
+  delay(500);
   digitalWrite(13, LOW);
 }
 
@@ -227,7 +227,8 @@ void loop() {
   // The LED will 'echo' the button
   //digitalWrite(13, MCP.digitalRead(0));
   //updateKeys();//call the update method
-  sendText();
+  printMCPINFO();
+  //sendText();
 }
 
 //make sure only correct key is sent to USB Keyboard
@@ -260,9 +261,9 @@ void sendText()
             //setup for chip 1 readings
             //	    printMCPINFO();
             ledDebug();
-            delay(5000);
+            delay(100);
             Serial.println(textInputChip1[keyCode]);
-            mapToText(textInputChip1[keyCode], 0);
+            //mapToText(textInputChip1[keyCode], 0);
             if(MCP.digitalRead(keyCode) == 0) {
               //Serial.println(smallcase[keyCode]); //debug
               //Keyboard.println(smallcase[keyCode1]); //to editor

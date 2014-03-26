@@ -4,7 +4,7 @@
 ///         Pedro Kirk	    <ped4416@gmail.com>                    ///
 /// URL: http://typebar.github.io                                  ///
 /// Created: 23-03-2014                                            ///
-/// Last-Updated: 25-03-2014                                       ///
+/// Last-Updated: 26-03-2014                                       ///
 ///   By: Anton Strilchuk <anton@isoty.pe>                         ///
 ///                                                                ///
 /// Filename: typebar                                              ///
@@ -108,13 +108,66 @@
 
 MCP23017 MCP; //Define class MCP23017 as MCP
 
+/*  */
+byte key_matrix_QA2[] =
+  {KEY_Q, //0
+   KEY_A, //1
+   KEY_2, //2
+   KEY_Z, //3
+   KEY_W, //4
+   KEY_S, //5
+   KEY_3, //6
+   KEY_X, //7
+   KEY_E, //8
+   KEY_D, //9
+   KEY_4, //10
+   KEY_C, //11
+   KEY_R, //12
+   KEY_F, //13
+   KEY_5, //14
+   KEY_V  //15
+  };
+
+byte key_matrix_TG6[] =
+  {KEY_T,    //0
+   KEY_G,    //1
+   KEY_6,    //2
+   KEY_B,    //3
+   KEY_Y,    //4
+   KEY_H,    //5
+   KEY_7,    //6
+   KEY_N,    //7
+   KEY_U,    //8
+   KEY_J,    //9
+   KEY_8,    //10
+   KEY_M,    //11
+   KEY_I,    //12
+   KEY_K,    //13
+   KEY_9,    //14
+   KEY_COMMA //15
+  };
+byte key_matrix_OLMINUS[] =
+  {KEY_O,         //0
+   KEY_L,         //1
+   KEY_MINUS,     //2
+   KEY_PERIOD,    //3
+   KEY_P,         //4
+   KEY_SEMICOLON, //5
+   KEY_LEFT,      //6
+   KEY_RIGHT,     //7
+   KEY_UP,        //8
+   KEY_DOWN       //9
+  };
+
+boolean shift_key_pressed = false;
+
 void setup() {  
   /* Sets ADDRESS for chips */
   for(int set_pin_address = 0; set_pin_address < 4; set_pin_address++)
     {
       MCP.begin(set_pin_address); //Shift through address numbers
       MCP.pinMode(set_pin_address, INPUT); //Set: pin modes for chip pins
-      MCP.pullUp(set_pin_address, LOW); //Set: 100K internal pullup
+      MCP.pullUp(set_pin_address, 1); //Set: 100K internal pullup
     }
   
   Serial.begin(9600);// set up a Serial Libarary at 9600 bps
@@ -124,51 +177,139 @@ void setup() {
 
 void loop() {
   // The LED will 'echo' the button
-  //digitalWrite(13, MCP.digitalRead(0));
-  updateKeys();//call the update method
+  // MCP.begin(0); //Shift through address numbers
+  printMCPINFO();
+
+  //  get_keypress_input();//call the update method
 }
 
-void updateKeys(){
-  /* Debug print function */
-  //printMCPINFO();
-  digitalWrite(13, HIGH);
-  for(int set_pin_address = 0; set_pin_address < 4; set_pin_address++)
-    {
-      MCP.begin(set_pin_address);
-      //  Serial.println(set_pin_address);
-      if (set_pin_address == 0)
-        {
-          //    Serial.println(i);
-          if(MCP.digitalRead(8) == 1)
-            {
-              Serial.print("e");
+/*---------------.
+| READ FUNC DEFS |
+`---------------*/
+
+void get_keypress_input()
+{
+  for(int set_pin_address = 0; set_pin_address < 4; set_pin_address++) {
+    MCP.begin(set_pin_address);
+    //call chip 1 text mappings
+    if (set_pin_address == 0)
+      {
+        for(int set_keypressed = 0; set_keypressed < 16; set_keypressed ++)
+          {//iterate over the key code array
+            //setup for chip 1 readings
+            //	    printMCPINFO();
+            active_debug_indicator_led();
+            delay(5000);
+            Serial.println(key_matrix_QA2[set_keypressed]);
+            mapToText(key_matrix_QA2[set_keypressed], 0);
+            if(MCP.digitalRead(set_keypressed) == 0) {
+              //Serial.println(smallcase[set_keypressed]); //debug
+              //Keyboard.println(smallcase[set_keypressed1]); //to editor
+              active_debug_indicator_led();
             }
-        }
-      
-      //calls for 16 pins from chip 2 Address 0x21
-      if (set_pin_address == 3)
-        {
-          if(MCP.digitalRead(0) == 0)
-            {
-              Serial.print("a");
+            else if (MCP.digitalRead(set_keypressed) == 0 && shift_key_pressed) {
+              //Serial.println(smallcase[set_keypressed]); //debug
+              //Keyboard.println(smallcase[set_keypressed1]); //to editor
+              active_debug_indicator_led();
             }
-          else if(MCP.digitalRead(1) == 0)
-            {
-              Serial.print("s");//simply ouput a space to println.
+            //mapToText(MCP.digitalRead(textInputChip[set_keypressed]), 0);
+            //set keys to first chip for lower case
+
+          }
+      }
+    //call chip 2 text mappings
+    if (set_pin_address == 1)
+      {
+        for(int set_keypressed = 0; set_keypressed < 16; set_keypressed ++)
+          {//iterate over the key code array
+            //setup for chip 2 readings
+            //Serial.println(smallcase[set_keypressed]);
+            if(MCP.digitalRead(set_keypressed) == 0) {
+              // Serial.println(smallcase[set_keypressed]); //debug
+              //Keyboard.println(smallcase[set_keypressed]); //to editor
+              active_debug_indicator_led();
             }
-        }
-      delay(10);
-    }  
-  //int e = MCP2.digitalRead(2);
-  //int space = MCP2.digitalRead(3);
-  digitalWrite(13, LOW);
-  delay(50);
+            else if (MCP.digitalRead(set_keypressed) == 0 && shift_key_pressed) {
+              // Serial.println(smallcase[set_keypressed]); //debug
+              //Keyboard.println(smallcase[set_keypressed]); //to editor
+              active_debug_indicator_led();
+            }
+          }
+      }
+    //call chip 3 text mappings 
+    /*--------------------------
+      Need to add in Space Bar and other keys here.. ? 
+    */
+    
+    if (set_pin_address == 2)
+      {
+        for(int set_keypressed = 0; set_keypressed < 16; set_keypressed ++)
+          {//iterate over the key code array
+            if(MCP.digitalRead(set_keypressed) == 0) {
+              //Serial.println(smallcase[set_keypressed]); //debug
+              //Keyboard.println(smallcase[set_keypressed]); //to editor
+              active_debug_indicator_led();
+            }
+            else if (MCP.digitalRead(set_keypressed) == 0 && shift_key_pressed) {
+              //Serial.println(smallcase[set_keypressed]); //debug
+              //Keyboard.println(smallcase[set_keypressed]); //to editor
+              active_debug_indicator_led();
+            }
+          }
+      }	
+    //chip 4 is outputs for LEDs
+    //call chip 4 LED mappings
+    if (set_pin_address == 3)
+      {
+        for(int ledOut = 0; ledOut<16; ledOut++)
+          {
+            //code to print out 16 leds.. 
+          }
+      }
+  } 
 }
 
+void mapToText(byte key, int modifier) {
+  /*--------------------------------------------------.
+  | Keys can be pressed with, or without the use      |
+  | of a modifier key.                                |
+  | NOTE: this can be somewhat fiddly on a typewriter |
+  `--------------------------------------------------*/
+  Keyboard.set_modifier(modifier);
+  Keyboard.set_key1(key);
+  
+  /*-NKRO and Keypress Limit-----------------------------------------------.
+  | The Keyboard lib allows for a maximum of 6 keys to be pressed          |
+  | simultaneous - this is fine for applications like a Typewriter         |
+  | but is unfortunately limiting for modern keyboards, as No Key          |
+  | Roll Over (NKRO) is a common feature that allows you to press          |
+  | unlimited keys together, creating key chords, or key                   |
+  | combinations of any specific size.                                     |
+  | E.g.                                                                   |
+  | CMD+CTRL+ALT+SHIFT+A+G+B+C+...out of fingers (Achieveable with NKRO)   |
+  | CMD+CTRL+ALT+SHIFT+A+G (Achieveable with Arduino USB_KEYBOARD Library) |
+  `-----------------------------------------------------------------------*/
+  
+  /* FUNCTIONS
+   * Keyboard.set_key(VALUE) 
+   *   can take either a Key value defined in table 
+   *   below, or, a 0 indicating the key is currently off.
+   * Keyboard.set_modifier(MODIFIER_KEY)
+   *   can be set
+   */ 
+  Keyboard.send_now();
+  delay(100);
+  Keyboard.set_key1(0); 
+  Keyboard.send_now();
+}
+
+/*----------------.
+| DEBUG FUNC DEFS |
+`----------------*/
 void printMCPINFO () {
   /*
     /---------------------------------------------------.
-    | FUNCTION TO PRINT OUT Debug INFO FOR MCP I/O PINS |
+    | FUNCTION TO PRINT OUT DEBUG INFO FOR MCP I/O PINS |
     `---------------------------------------------------/
   */
   for(int set_pin_address = 0; set_pin_address < 4; set_pin_address++) {
@@ -178,13 +319,21 @@ void printMCPINFO () {
     Serial.print(set_pin_address);
     Serial.print("\n");
     for(int i = 0; i < 16; i++) {
+      int val = MCP.digitalRead(i);
       Serial.print("Pin: ");
       Serial.print(i);
       Serial.print(" | ");
-      Serial.print(MCP.digitalRead(i));
+      Serial.print(val, DEC);
       Serial.print("\t\n");
     }
   }
+}
+
+
+void active_debug_indicator_led() {
+  digitalWrite(13, HIGH);
+  delay(50);
+  digitalWrite(13, LOW);
 }
 
 /* _MCP.ino ends here */
